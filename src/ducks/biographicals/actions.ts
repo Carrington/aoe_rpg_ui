@@ -44,9 +44,13 @@ export type AttractionGrid = IAttractionValue[];
 
 export type BiologicalSex  = Genders.Female | Genders.Intersex | Genders.Male;
 
+export interface IName {
+  name: string,
+  index?: number
+}
+
 export interface INamePayload {
-  names: string[],
-  index?: number,
+  names: IName[]
 }
 
 export interface IGenderPayload {
@@ -67,13 +71,13 @@ export interface IAttractionGridPayload {
 
 export type BiographicalPayloads = IAttractionGridPayload | INamePayload | IGenderPayload | IQueerPayload | IBioSexPayload;
 
-export const initName = (names: string[]): IAction<BiographicalActions.INIT_NAME, INamePayload> => ({
+export const initName = (names: IName[]): IAction<BiographicalActions.INIT_NAME, INamePayload> => ({
   payload: { names } as INamePayload,
   type: BiographicalActions.INIT_NAME
 });
 
-export const changeName = (names: string[], index: number): IAction<BiographicalActions.CHANGE_NAME, INamePayload> => ({
-  payload: {names, index},
+export const changeName = (names: IName[]): IAction<BiographicalActions.CHANGE_NAME, INamePayload> => ({
+  payload: { names },
   type: BiographicalActions.CHANGE_NAME
 });
 
