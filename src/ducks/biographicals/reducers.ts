@@ -2,11 +2,15 @@ import { IAction } from './../../types/actions.d';
 import { AttractionGrid, AttractionType, BiographicalActions, BiographicalPayloads, BiologicalSex, Genders, IAttractionGridPayload, IBioSexPayload, IGenderPayload, INamePayload, IQueerPayload } from './actions';
 
 export interface IBiographicalState {
-  name: string[],
+  names: string[],
   gender: Genders,
   biologicalSex: BiologicalSex,
   genderQueer: boolean,
   attractionGrid: AttractionGrid,
+}
+
+export interface INameState {
+  names: string[];
 }
 
 const InitialState = {
@@ -21,21 +25,19 @@ const InitialState = {
   biologicalSex: Genders.Intersex as BiologicalSex,
   gender: Genders.Agender,
   genderQueer: false,
-  name: ['New', 'Character']
+  names: ['New', 'Character']
 }
 
 export const biographicalReducer = (state: IBiographicalState = InitialState, action: IAction<BiographicalActions, BiographicalPayloads>) => {
   switch (action.type) {
     case BiographicalActions.INIT_NAME: {
       const { names } = action.payload as INamePayload;
-      return { ...state, name: names };
+      return { ...state, names };
     }
     case BiographicalActions.CHANGE_NAME: {
-      const { names, index } = action.payload as INamePayload;
-      if (index && index >= 0)  {
-        state.name[index] = names[0];
-      }
-      return state;
+      const { names } = action.payload as INamePayload;
+      return { ...state,
+        names: names.map((name, index) => (name.name) ? name.name : state.names[index])};
     }
     case BiographicalActions.INIT_GENDER_QUEER: {
       const { genderQueer } = action.payload as IQueerPayload;
