@@ -44,6 +44,8 @@ export type AttractionGrid = IAttractionValue[];
 
 export type BiologicalSex  = Genders.Female | Genders.Intersex | Genders.Male;
 
+export const biologicalSexes = [Genders.Female, Genders.Intersex, Genders.Male];
+
 export interface IName {
   name: string,
   index?: number
