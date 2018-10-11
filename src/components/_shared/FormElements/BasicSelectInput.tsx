@@ -1,28 +1,31 @@
 import * as React from 'react';
-import { Genders } from '../../../ducks/biographicals/actions';
 
 interface IBasicSelectInputProps<value> {
   value: value,
   required: boolean,
   options: value[],
+  onSelect: SelectCallback,
   label?: string,
 }
 
-type BasicSelectValues = string | number | Genders;
+type SelectCallback = (e: React.FormEvent<HTMLSelectElement>) => void;
 
-class BasicSelectInput<V> extends React.Component<IBasicSelectInputProps<BasicSelectValues>> {
-  constructor(props: IBasicSelectInputProps<BasicSelectValues>) {
+class BasicSelectInput<V> extends React.Component<IBasicSelectInputProps<V>> {
+  constructor(props: IBasicSelectInputProps<V>) {
     super(props);
   }
 
   public render() {
     return (
-      <select>
+      <select
+        onChange={this.props.onSelect}
+      >
         {
           this.props.options.map(value =>
             (
               <option
-                value={value}
+                value={value.toString()}
+                key={value.toString()}
                 selected={(value === this.props.value)}
               >
                 {value}

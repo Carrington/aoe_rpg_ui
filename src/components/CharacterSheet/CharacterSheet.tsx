@@ -1,24 +1,22 @@
 import * as React from 'react';
-
-interface ICharacterSheetProps {
-
-}
+import BiographicalSheet from '../BiographicalSheet/BiographicalSheet';
+import SoulSheet from '../SoulSheet/SoulSheet';
 
 class CharacterSheet extends React.Component {
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
   }
 
-  render() {
-    <div>>
+  public render() {
+    return (
       <div>
-        //TODO BiographicalSheet
-        //TODO InitiationSheet
-        //TODO BackgroundsSheet
-        //TODO SkillSheet
+        <div>
+          <BiographicalSheet/>
+          <SoulSheet />
+        </div>
       </div>
-    </div>
+    )
   }
 }
 

@@ -1,8 +1,10 @@
 import * as firebase from 'firebase';
-import { reactReduxFirebase } from 'react-redux-firebase';
+import { getFirebase, reactReduxFirebase } from 'react-redux-firebase';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
-import { rootReducer } from '../ducks/index';
+import thunk from 'redux-thunk'
+import { initialState, rootReducer } from '../ducks/index';
+const version = '1';
 
 export interface IFirebaseConfig {
   apiKey: string,
@@ -30,21 +32,41 @@ export const firebaseConfig: IFirebaseConfig = {
   storageBucket: "age-of-endings-rpg.appspot.com",
 }
 
-firebase.initializeApp(firebaseConfig);
 
-// TODO figure out concrete type of a compose store function
-const createStoreWithFirebase = compose(
-  reactReduxFirebase(firebase, rrfConfig)(createStore)
-);
+declare global {
+  // tslint:disable-next-line:interface-name
+  interface Window {
+    devToolsExtension: any,
+    version: string
+  }
+}
 
-const initialState = {};
+export default (initState = initialState) => {
+  window.version = version
 
-const epicMiddleware = createEpicMiddleware();
+  const middleware =[
+    thunk.withExtraArgument(getFirebase),
+    createEpicMiddleware()
+  ];
 
-const store = createStoreWithFirebase(
-  rootReducer,
-  initialState,
-  applyMiddleware(epicMiddleware)
-);
+  const enhancers = [];
 
-export default store;
+  const devToolsExtension = window.devToolsExtension
+  if (typeof devToolsExtension === 'function') {
+    enhancers.push(devToolsExtension())
+  }
+
+  firebase.initializeApp(firebaseConfig);
+
+  const store = createStore(
+    rootReducer,
+    initState,
+    compose(
+      applyMiddleware(...middleware),
+      reactReduxFirebase(firebase, rrfConfig),
+      ...enhancers
+    )
+  )
+
+  return store
+}

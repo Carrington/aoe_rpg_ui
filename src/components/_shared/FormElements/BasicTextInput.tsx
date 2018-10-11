@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 interface IBasicTextInputProps {
-  value: string | null,
+  value: string | string[] | undefined | number,
   required: boolean,
   changeCallback: ChangeCallback,
   filterPattern?: RegExp,
   label?: string,
 }
 
-interface IBasicTextInputState extends IBasicTextInputProps {
+interface IBasicTextInputState {
   errorString: string,
-  value: string,
+  value: string  | string[] | undefined | number,
 }
 
 type ChangeCallback = (value: any) => string | void;
@@ -20,6 +20,12 @@ class BasicTextInput extends React.Component<IBasicTextInputProps, IBasicTextInp
 
     constructor(props: IBasicTextInputProps) {
       super(props);
+
+      this.state = {
+        errorString: '',
+        value: props.value,
+      };
+
       this.changeCallback = props.changeCallback.bind(this);
     }
 
@@ -31,16 +37,17 @@ class BasicTextInput extends React.Component<IBasicTextInputProps, IBasicTextInp
 
       return (
         <div>
-        {this.props.label &&
-          <span>{label}</span>
-        }
-        <input
-          required={required}
-          // tslint:disable-next-line:jsx-no-lambda
-          onChange={(e) => this.checkPattern(e)}
-        />
-        <span>{this.state.errorString}</span>
-      </div>
+          {this.props.label &&
+            <span>{label}</span>
+          }
+          <input
+            required={required}
+            value={this.props.value}
+            // tslint:disable-next-line:jsx-no-lambda
+            onChange={(e) => this.checkPattern(e)}
+          />
+          <span>{this.state.errorString}</span>
+        </div>
       )
     }
 
@@ -60,7 +67,7 @@ class BasicTextInput extends React.Component<IBasicTextInputProps, IBasicTextInp
       const value = (target as HTMLInputElement).value
 
       if (!filterPattern) {
-        this.setError(this.changeCallback(value))
+        this.changeCallback(value);
         return;
       }
 

@@ -5,7 +5,7 @@ interface ICellProps {
   onMouseOver?: () => any;
 }
 
-const Cell: React.SFC = (props: ICellProps) => (
+const Cell: React.SFC<ICellProps> = (props: ICellProps) => (
   <td
     onClick={props.onClick}
   />

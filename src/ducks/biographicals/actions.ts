@@ -1,5 +1,5 @@
 import { IAction } from '../../types/actions';
-import { BiographicalPayloads } from './actions';
+import { AttractionType, BiographicalPayloads, IAttractionGridPayload } from './actions';
 
 export enum BiographicalActions {
   INIT_NAME = 'AOE/CHARACTER/INIT_NAME',
@@ -21,30 +21,31 @@ export enum Genders {
   DemiMale = 'Demi-male',
   Female = 'Female',
   Genderfluid = 'Genderfluid',
+  Androgyne = 'Androgyne',
   Male = 'Male',
   Polygender = 'Polygender',
   Intersex = 'Intersex'
 }
 
-export enum AttractionType {
-  AromanticAsexuality,
-  RomanticAsexuality,
-  TertiarySexuality,
-  SecondarySexuality,
-  PrimarySexuality,
-  HyperSexuality
-}
+export type AttractionType = 'AromanticAsexuality' | 'RomanticAsexuality' | 'TertiarySexuality' | 'SecondarySexuality' | 'PrimarySexuality' | 'HyperSexuality';
 
 export interface IAttractionValue {
-  index: AttractionType,
+  attractionType: AttractionType,
   value: number
 }
 
-export type AttractionGrid = IAttractionValue[];
+export interface IAttractionGrid {
+  AromanticAsexuality: { value: number | null },
+  HyperSexuality: { value: number | null },
+  PrimarySexuality: { value: number | null },
+  RomanticAsexuality: { value: number | null },
+  SecondarySexuality: { value: number | null },
+  TertiarySexuality: { value: number | null },
+};
 
 export type BiologicalSex  = Genders.Female | Genders.Intersex | Genders.Male;
 
-export const biologicalSexes = [Genders.Female, Genders.Intersex, Genders.Male];
+export const biologicalSexes: BiologicalSex[] = [Genders.Female, Genders.Intersex, Genders.Male];
 
 export interface IName {
   name: string,
@@ -78,6 +79,7 @@ export const initName = (names: IName[]): IAction<BiographicalActions.INIT_NAME,
   type: BiographicalActions.INIT_NAME
 });
 
+export type ChangeNameAction = (names: IName[]) => IAction<BiographicalActions.CHANGE_NAME, INamePayload>;
 export const changeName = (names: IName[]): IAction<BiographicalActions.CHANGE_NAME, INamePayload> => ({
   payload: { names },
   type: BiographicalActions.CHANGE_NAME
@@ -110,4 +112,14 @@ export const initBiologicalSex = (sex: BiologicalSex): IAction<BiographicalActio
 export const changeBiologicalSex = (sex: BiologicalSex): IAction<BiographicalActions.CHANGE_BIOLOGICAL_SEX, IBioSexPayload> => ({
   payload: {sex},
   type: BiographicalActions.CHANGE_BIOLOGICAL_SEX
+});
+
+export const initAttractionGrid = (grid: IAttractionValue[]): IAction<BiographicalActions.INIT_ATTRACTION_GRID, IAttractionGridPayload> => ({
+  payload: {values: grid},
+  type: BiographicalActions.INIT_ATTRACTION_GRID
+});
+
+export const changeAttractionGrid = (grid: IAttractionValue[]): IAction<BiographicalActions.CHANGE_ATTRACTION_GRID, IAttractionGridPayload> => ({
+  payload: {values: grid},
+  type: BiographicalActions.CHANGE_ATTRACTION_GRID
 });

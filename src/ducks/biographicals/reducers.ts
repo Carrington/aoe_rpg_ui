@@ -1,27 +1,27 @@
 import { IAction } from './../../types/actions.d';
-import { AttractionGrid, AttractionType, BiographicalActions, BiographicalPayloads, BiologicalSex, Genders, IAttractionGridPayload, IBioSexPayload, IGenderPayload, INamePayload, IQueerPayload } from './actions';
+import { BiographicalActions, BiographicalPayloads, BiologicalSex, Genders, IAttractionGrid, IAttractionGridPayload, IBioSexPayload, IGenderPayload, INamePayload, IQueerPayload } from './actions';
 
 export interface IBiographicalState {
   names: string[],
   gender: Genders,
   biologicalSex: BiologicalSex,
   genderQueer: boolean,
-  attractionGrid: AttractionGrid,
+  attractionGrid: IAttractionGrid,
 }
 
 export interface INameState {
   names: string[];
 }
 
-const InitialState = {
-  attractionGrid: [
-    { index: AttractionType.AromanticAsexuality, value: 0 },
-    { index: AttractionType.RomanticAsexuality, value: 0 },
-    { index: AttractionType.TertiarySexuality, value: 0 },
-    { index: AttractionType.SecondarySexuality, value: 0 },
-    { index: AttractionType.PrimarySexuality, value: 0 },
-    { index: AttractionType.HyperSexuality, value: 0 },
-  ],
+export const InitialState: IBiographicalState = {
+  attractionGrid: {
+    AromanticAsexuality: { value: 0 },
+    HyperSexuality: { value: 0 },
+    PrimarySexuality: { value: 0 },
+    RomanticAsexuality: { value: 0 },
+    SecondarySexuality: { value: 0 },
+    TertiarySexuality: { value: 0 },
+  },
   biologicalSex: Genders.Intersex as BiologicalSex,
   gender: Genders.Agender,
   genderQueer: false,
@@ -37,7 +37,7 @@ export const biographicalReducer = (state: IBiographicalState = InitialState, ac
     case BiographicalActions.CHANGE_NAME: {
       const { names } = action.payload as INamePayload;
       return { ...state,
-        names: names.map((name, index) => (name.name) ? name.name : state.names[index])};
+        names: names.map((name, attractionType) => (name.name) ? name.name : state.names[attractionType])};
     }
     case BiographicalActions.INIT_GENDER_QUEER: {
       const { genderQueer } = action.payload as IQueerPayload;
@@ -61,8 +61,12 @@ export const biographicalReducer = (state: IBiographicalState = InitialState, ac
       const { values } = action.payload as IAttractionGridPayload
       const { attractionGrid } = state;
 
-      values.forEach(({ value, index }) => attractionGrid[AttractionType[index]] = value);
-      return { ...state, attractionGrid: values }
+      const grid = Object.keys(attractionGrid).map((attractionType) => {
+        const newVal = values.find((v) => v.attractionType === attractionType);
+        return newVal ? { attractionType, value: newVal.value } : attractionGrid[attractionType]
+      });
+
+      return { ...state, attractionGrid: grid }
     }
   }
 

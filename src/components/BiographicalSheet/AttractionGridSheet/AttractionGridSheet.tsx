@@ -1,24 +1,51 @@
 
 import * as React from 'react';
-import { AttractionType } from '../../../ducks/biographicals/actions';
+import { IAttractionGridSheetProps } from '.';
+import { AttractionType, IAttractionValue } from '../../../ducks/biographicals/actions';
+import Row from './Row';
 
-const AttractionGridSheet: SFC = () => (
-  <div>
+const clickCell = (e: React.MouseEvent, onChangeAttractionValue: (v: IAttractionValue) => void) => {
+  const attractionType: AttractionType | null = e.currentTarget.getAttribute('data-row') as AttractionType | null;
+  const value = e.currentTarget.getAttribute('data-value') || '0';
+
+  if (!attractionType) {
+     return;
+  }
+
+  const attractionValue = {
+    attractionType,
+    value: Number.parseInt(value, 10)
+  };
+
+
+  onChangeAttractionValue(
+    attractionValue
+  )
+};
+
+const AttractionGridSheet: React.SFC = (props: IAttractionGridSheetProps) =>
+  (
     <table>
-      {
-        Object.keys(AttractionType).map((key) =>
-          <tr key={key}>
+      <tbody>
+        {
+          Object.keys(props.attractionGrid).map((key) =>
             (
-              Array(5).map((_, index) =>
-                <td key="index" />
-              )
+              <Row
+                // tslint:disable-next-line:jsx-no-lambda
+                onClick={(e) => clickCell(e, props.onChangeAttractionValue)}
+                activeCell={props.attractionGrid[key].value}
+                activeColor={'red'}
+                inactiveColor={'blue'}
+                cellNumber={5}
+                key={props.attractionGrid[key].attractionType}
+                id={props.attractionGrid[key].attractionType}
+              />
             )
-          </tr>
-        )
-      }
+          )
+        }
+      </tbody>
     </table>
-  </div>
-)
+  );
 
 
 export default AttractionGridSheet;

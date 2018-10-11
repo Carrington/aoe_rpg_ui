@@ -1,26 +1,35 @@
 import * as React from 'react';
-import { IName } from '../../../ducks/biographicals/actions';
-import { INameState } from "../../../ducks/biographicals/reducers";
 import BasicTextInput from '../../_shared/FormElements/BasicTextInput';
+import { INameSheetProps } from './index';
 
-const NameSheet: React.SFC<INameState> = (props: INameState) =>
-  (
+const NameSheet: React.SFC<INameSheetProps> = (props: INameSheetProps) => {
+  let names = '';
+
+  if (props.names) {
+    names = props.names.join(' ')
+  }
+
+  return (
     <BasicTextInput
-      value={props.names.join(' ')}
+      value={names}
       required={true}
       label="Full Name"
       // tslint:disable-next-line:jsx-no-lambda
-      changeCallback={(value: string) => {
-        value
+      changeCallback={(value: string): void => {
+        const changes = value
           .split(' ')
-          .reduce(
-            (accumulator: IName[], name: string, index: number) =>
-              (!props.names[index] || props.names[index] !== name) ?
-                accumulator.push({ name, index }) : accumulator,
-            []
+          .map(
+            (name: string, index: number) =>
+              ({name, index})
           )
+          .filter((name, index) =>
+            (!props.names[index] || props.names[index] !== name.name)
+          );
+
+        props.changeName(changes);
       }}
     />
   )
+}
 
   export default NameSheet;
