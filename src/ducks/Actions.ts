@@ -3,7 +3,7 @@ import { Epic } from "redux-observable";
 import { from, of } from 'rxjs';
 import { switchMap, filter, map, catchError } from 'rxjs/operators';
 import { isActionOf, createAction } from 'typesafe-actions';
-import { create } from 'domain';
+import { Handler, Action } from '../types';
 
 /**
  * move later
@@ -24,11 +24,6 @@ const apiLoadActions = (id: string) => new Promise((resolve: Resolver, reject: R
  * Actions Types
  */
 
- interface Action {
-   type: string;
-   payload?: any;
- }
-
 interface LoadingErrorObject {
   error: string;
   code: number;
@@ -46,10 +41,6 @@ interface GameAction {
   name: string;
   label: string;
   icon: string;
-}
-
-interface Handler {
-  [member: string]: (action: Action, state: ActionsState) => ActionsState;
 }
 
 /**
@@ -105,7 +96,7 @@ const initialState: ActionsState = {
 const reducer = (state: ActionsState = initialState, action: Action) =>
   (handler.hasOwnProperty(action.type)) ? handler[action.type](action, state) : initialState;
 
-const handler: Handler = {}
+const handler: Handler<ActionsState> = {}
 
 handler[BEGIN_LOADING] = (action, state) =>
   ({ ...state,
