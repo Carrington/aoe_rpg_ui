@@ -37,10 +37,24 @@ interface ActionsState {
   error: null | LoadingErrorObject;
 }
 
+type Effect = (context: any) => any;
+
+type Suit = 'swords' | 'cups' | 'pentacles' | 'wands' | 'major';
+
+type CardNumber = 'A'|2|3|4|5|6|7|8|9|10|'J'|'Q'|'K'|Number;
+
+interface Card {
+  suit: Suit;
+  number: CardNumber;
+}
+
 interface GameAction {
   name: string;
   label: string;
   icon: string;
+  description: string;
+  effect: Effect;
+  card: Card;
 }
 
 /**
