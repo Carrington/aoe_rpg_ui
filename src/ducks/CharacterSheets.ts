@@ -1,9 +1,30 @@
 import { isActionOf, createAction, action } from 'typesafe-actions';
 import { Handler, Action } from '../types';
 
+interface GoalsSheet {
+  short: string;
+  medium: string;
+  long: string;
+}
+
+interface MotivatingPrinciple {
+  guideWord: string;
+  principle: string;
+}
+
 export interface Sheet {
   loaded: boolean;
   sheetId: string;
+  name: string;
+  gloryName?: string;
+  description: string;
+  goals: GoalsSheet;
+  calliopeChips: number;
+  nemesisChips: number;
+  ethos: [MotivatingPrinciple];
+  willpower: number;
+  intuition: number;
+
 }
 
 interface CharacterSheetsState {

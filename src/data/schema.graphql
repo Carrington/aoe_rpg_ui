@@ -1,0 +1,90 @@
+enum Suit {
+  SWORDS
+  CUPS
+  WANDS
+  PENTACLES
+}
+
+enum ActionType {
+  MANEUVER
+  OFFENSIVE
+  DEFENSIVE
+  GRANDSTAND
+  INTERRUPT
+}
+
+type MinorArcana {
+  number: Int
+  suit: Suit
+}
+
+type MajorArcana {
+  number: Int
+  name: String
+}
+
+union Card = MinorArcana | MajorArcana
+
+union Initiative = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+
+type Action {
+  id: String
+  name: String
+  type: ActionType
+  description: String
+  baseCard: Card
+  multiplier: Int
+  minInitiative: Initiative
+  maxInitiative: Initiative
+  actionResolver: String
+}
+
+type BaseKnack {
+  id: String
+  # Logos Resolver and Action Resolver might be better as custom scalars? #
+  logosResolver: String
+  action: Action
+}
+
+type OlympianKnack {
+  id: String
+  name: String
+  baseKnack: BaseKnack
+  knackContext: Object
+  description: String
+  parent: String
+}
+
+type Pantheon {
+  id: String
+  name: String
+}
+
+type Heaven {
+  id: String
+  name: String
+}
+
+type Domain {
+  id: String
+  name: String
+  heaven: Heaven
+}
+
+type OlympianPatron {
+  id: String
+  name: String
+  pantheon: Pantheon
+  domain: Domain
+  availableKnacks: [OlympianKnack]
+}
+
+type StandardAction {
+  id: String
+  name: String
+  baseCard: Card
+  description: description
+  actionResolver: String
+}
+
+union Action = OlympianKnack | StandardAction

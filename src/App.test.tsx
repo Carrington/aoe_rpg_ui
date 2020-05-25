@@ -1,9 +1,26 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
 import App from './App';
+import DeckContainer from './components/DeckContainer';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('Root App', () => {
+  let wrapper;
+
+  beforeEach(() => wrapper = shallow(<App />));
+
+  it('renders without crashing', () => {
+    expect(wrapper.find('div.App').length).toEqual(1);
+  });
+
+  it('renders the deck', () => {
+    expect(wrapper.containsMatchingElement(<DeckContainer />)).toEqual(true);
+  });
+
+  it('renders the stage', () => {
+    expect(wrapper.containsMatchingElement(<StageContainer />)).toEqual(true);
+  });
+
+  it('renders the info tabs', () => {
+    expect(wrapper.containsMatchingElement(<InfoTabsContainer />)).toEqual(true);
+  });
 });

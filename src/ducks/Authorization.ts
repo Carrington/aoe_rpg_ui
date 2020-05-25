@@ -34,7 +34,7 @@ export const login = createAction(LOGIN, action => (username: string, uid: strin
 
 export const checkAuthentication = createAction(CHECK_AUTHENTICATION, action => (username: string, password: string) => action(username, password));
 
-export const checkAuthentication = createAction(CHECK_AUTHENTICATION, action => (username: string, password: string) => action(username, password));
+// export const checkAuthentication = createAction(CHECK_AUTHENTICATION, action => (username: string, password: string) => action(username, password));
 
 /**
   * Authorization Reducer

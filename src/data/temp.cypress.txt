@@ -1,0 +1,56 @@
+CREATE
+  (MP:Person {name:"Mireia Pearce", short:"Pearce"}),
+    (Ivy:Matriarch {name:"Ivy Pearce", short: "Ivy"}),
+    (MP)-[:PARENTAL {nature:"MOTHER"}]->(Ivy),
+    (RM:Person {name:"Ria's Mom Ruani", short:"Ria's Mom"}),
+    (RD:Person {name:"Ria's Dad Ruani", short:"Ria's Dad"}),
+    (RM)-[:ROMANCE {nature:"MARRIED", active:FALSE}]->(RD),
+
+      (Molly:Person {name:"Molly Atkeson", short:"Amy's Mom"}),
+      (Ivy)-[:PARENTAL {nature:"SOME-GREAT-GRANDMOTHER", fpo=TRUE}]->(Molly),
+      (Andrey:Person {name:"Andrey Belyakov", short:"Amy's Dad"}),
+      (Molly)-[:ROMANCE {nature:"MARRIED", active:FALSE}]->(Andrey),
+
+        (Amy:Person {name:"Amelia Atkeson", short:"Amy"}),
+        (Molly)-[:PARENTAL {nature:"MOTHER"}]->(Amy),
+        (Andrey)-[:PARENTAL {nature:"FATHER"}]->(Amy),
+        (Ria:Person {name:"Ria Rebecca Ruani", short:"Ria"}),
+
+
+        (Philip:Person {name:"Philip Belyakov", short:"Amy's Brother"}),
+        (Molly)-[:PARENTAL {nature:"MOTHER"}]->(Philip),
+        (Andrej)-[:PARENTAL {nature:"FATHER"}]->(Philip)
+
+
+      (ED:Person {name:"Ellie's Dad O'Rourke", short:"Ellie's Dad"}),
+      (Ivy)-[:PARENTAL {nature:"SOME-GREAT-GRANDMOTHER", fpo=TRUE}]->(ED),
+      (EM:Person {name:"Ellie's Mom O'Rourke", short:"Ellie's Mom"}),
+      (ED)-[:ROMANCE {nature:"MARRIED", active:FALSE}]->(EM),
+
+  (Aurora:Person {name:"Aurora Curtis", short:"Shirley's Mom"}),
+  (Belle:Person {name:"Belle Delavan", short:"Belle", nee:["O'Rourke"]}),
+  (Michael:Person {name:"Michael Delavan", short:"Michael}),
+  (Brett:Person {name:"Brett O'Rourke", short:"Brett"}),
+
+  (Shirley:Person {name:"Shirley Curtis Delavan", short:"Shirley"}),
+  (Ellie:Person {name:"Eilonwy O'Rourke", short:"Ellie"}),
+
+
+
+  (Elise:Person {name:"Elise Atkeson", short:"Elise}),
+
+
+
+
+
+
+  (ED)-[:PARENTAL {nature:"FATHER"}]->(Ellie),
+  (ED)-[:PARENTAL {nature:"FATHER"}]->(Belle),
+  (ED)-[:PARENTAL {nature:"FATHER"}]->(Aurora),
+  (ED)-[:PARENTAL {nature:"FATHER"}]->(Brett),
+  (EM)-[:PARENTAL {nature:"MOTHER"}]->(Ellie),
+  (EM)-[:PARENTAL {nature:"MOTHER"}]->(Belle),
+  (EM)-[:PARENTAL {nature:"MOTHER"}]->(Aurora),
+  (EM)-[:PARENTAL {nature:"MOTHER"}]->(Brett),
+  (Belle)-[:ROMANCE {nature:"MARRIED", active:TRUE}]->(Michael),
+  (Aurora)-[:PARENTAL]

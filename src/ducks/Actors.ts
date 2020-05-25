@@ -10,5 +10,5 @@ export interface Actor {
   id: string;
   name: string;
   displayName: string;
-  characterSheet: CharacterSheet;
+  characterSheet?: CharacterSheet;
 }

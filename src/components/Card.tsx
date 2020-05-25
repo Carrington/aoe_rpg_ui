@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const Card: React.SFC<any> = ({ suit, number, image, description }) => (
+const Card: React.FunctionComponent = ({ suit, number, image, description }) => (
     <div>
         <div className='upper-left card-number'>
             {{number}} {{suit}}
